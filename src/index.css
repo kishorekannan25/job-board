@@ -3,5 +3,26 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
 }
+
+/* Chart colours. Recharts takes colours as props, not classes, so they switch with the theme here. */
+:root {
+  --chart-bar: #6366f1;
+  --chart-grid: #e2e8f0;
+  --chart-axis: #64748b;
+  --chart-label: #334155;
+  --chart-cursor: #f1f5f9;
+  --chart-tooltip-bg: #ffffff;
+}
+
+.dark {
+  color-scheme: dark;
+  --chart-bar: #7c83f5;
+  --chart-grid: #1e293b;
+  --chart-axis: #94a3b8;
+  --chart-label: #cbd5e1;
+  --chart-cursor: #1e293b;
+  --chart-tooltip-bg: #0f172a;
+}
+

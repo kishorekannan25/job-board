@@ -25,10 +25,10 @@ export function StatsView({ applications }: { applications: Application[] }) {
         <div className="space-y-6">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {tiles.map((tile) => (
-                    <div key={tile.label} className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-                        <p className="text-sm font-medium text-slate-500">{tile.label}</p>
-                        <p className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">{tile.value}</p>
-                        <p className="mt-1 text-sm text-slate-500">{tile.detail}</p>
+                    <div key={tile.label} className="rounded-2xl bg-white dark:bg-slate-900 p-5 ring-1 ring-slate-200 dark:ring-slate-800">
+                        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{tile.label}</p>
+                        <p className="mt-2 text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">{tile.value}</p>
+                        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{tile.detail}</p>
                     </div>
                 ))}
             </div>

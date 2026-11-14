@@ -10,9 +10,9 @@ interface ApplicationFormProps {
   onDelete?: () => void
 }
 
-const labelClass = 'block text-sm font-medium text-slate-700'
+const labelClass = 'block text-sm font-medium text-slate-700 dark:text-slate-300'
 const inputClass =
-  'mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20'
+  'mt-1 w-full rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20'
 
 export function ApplicationForm({ initial, onSubmit, onCancel, onDelete }: ApplicationFormProps) {
   const [form, setForm] = useState({
@@ -99,7 +99,7 @@ export function ApplicationForm({ initial, onSubmit, onCancel, onDelete }: Appli
             value={form.interviewAt}
             onChange={(e) => update('interviewAt', e.target.value)}
           />
-          <span className="mt-1 block text-xs font-normal text-slate-400">Pick both a date and a time</span>
+          <span className="mt-1 block text-xs font-normal text-slate-400 dark:text-slate-500">Pick both a date and a time</span>
         </label>
         <label className={labelClass}>
           Salary
@@ -137,7 +137,7 @@ export function ApplicationForm({ initial, onSubmit, onCancel, onDelete }: Appli
             onClick={() => {
               if (window.confirm('Delete this application?')) onDelete()
             }}
-            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-rose-600 hover:bg-rose-50"
+            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40"
           >
             <Trash2 className="size-4" />
             Delete
@@ -147,7 +147,7 @@ export function ApplicationForm({ initial, onSubmit, onCancel, onDelete }: Appli
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50"
+            className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 ring-1 ring-slate-200 dark:ring-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             Cancel
           </button>

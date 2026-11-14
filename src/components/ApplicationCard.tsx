@@ -28,8 +28,8 @@ export function ApplicationCard({ application, overlay = false }: Props) {
 
   return (
     <div
-      className={`rounded-xl bg-white p-4 ring-1 ring-slate-200 ${
-        overlay ? 'rotate-2 cursor-grabbing shadow-xl ring-indigo-300' : 'shadow-sm hover:shadow-md hover:ring-slate-300'
+      className={`rounded-xl bg-white dark:bg-slate-900 p-4 ring-1 ring-slate-200 dark:ring-slate-800 ${
+        overlay ? 'rotate-2 cursor-grabbing shadow-xl ring-indigo-300 dark:ring-indigo-700' : 'shadow-sm hover:shadow-md hover:ring-slate-300 dark:hover:ring-slate-700'
       } transition-shadow`}
     >
       <div className="flex items-start gap-3">
@@ -39,14 +39,14 @@ export function ApplicationCard({ application, overlay = false }: Props) {
           {company.charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-semibold text-slate-900">{company}</p>
-          <p className="truncate text-sm text-slate-500">{role}</p>
+          <p className="truncate font-semibold text-slate-900 dark:text-slate-100">{company}</p>
+          <p className="truncate text-sm text-slate-500 dark:text-slate-400">{role}</p>
         </div>
-        <span className="shrink-0 text-xs text-slate-400">{relativeDay(appliedDate)}</span>
+        <span className="shrink-0 text-xs text-slate-400 dark:text-slate-500">{relativeDay(appliedDate)}</span>
       </div>
 
       {(location || salary) && (
-        <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
+        <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
           {location && (
             <span className="inline-flex items-center gap-1">
               <MapPin className="size-3.5" /> {location}
@@ -64,8 +64,8 @@ export function ApplicationCard({ application, overlay = false }: Props) {
         <div
           className={`mt-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium ring-1 ${
             isUpcoming(interviewAt)
-              ? 'bg-amber-50 text-amber-800 ring-amber-200'
-              : 'bg-slate-50 text-slate-500 ring-slate-200'
+              ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 ring-amber-200 dark:ring-amber-800'
+              : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 ring-slate-200 dark:ring-slate-800'
           }`}
         >
           <CalendarClock className="size-3.5" />

@@ -49,5 +49,14 @@ export function toDateTimeInput(iso: string): string {
   const date = new Date(iso)
   const h = String(date.getHours()).padStart(2, '0')
   const min = String(date.getMinutes()).padStart(2, '0')
-  return `${toDateInput(date)}T${h}:${min}`   
+  return `${toDateInput(date)}T${h}:${min}`
+}
+
+/** The Monday of the week containing `date`, at midnight. */
+export function startOfWeek(date: Date): Date {
+  const d = new Date(date)
+  d.setHours(0, 0, 0, 0)
+  const daysSinceMonday = (d.getDay() + 6) % 7
+  d.setDate(d.getDate() - daysSinceMonday)
+  return d
 }

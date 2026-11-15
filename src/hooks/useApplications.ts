@@ -47,5 +47,9 @@ export function useApplications() {
     setApplications((prev) => prev.filter((a) => a.id !== id))
   }
 
-  return { applications, setApplications, resetDemo, addApplication, updateApplication, deleteApplication }
+  function clearAll() {
+    setApplications([])
+  }
+
+  return { applications, setApplications, resetDemo, addApplication, updateApplication, deleteApplication, clearAll }
 }

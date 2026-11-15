@@ -1,7 +1,8 @@
-import { CalendarClock, ChartColumn, LayoutGrid, Moon, Plus, RotateCcw, Search, Sun } from 'lucide-react'
+import { CalendarClock, ChartColumn, Download, LayoutGrid, Moon, Plus, RotateCcw, Search, Sun, Trash2, Upload } from 'lucide-react'
+import { downloadBackup, parseBackup } from './lib/backup'
 import { useTheme } from './hooks/useTheme'
 import { Board } from './components/Board'
-import { useState } from 'react'
+import { useRef, useState, type ChangeEvent } from 'react'
 import { Modal } from './components/Modal'
 import { useApplications } from './hooks/useApplications'
 import { ApplicationForm } from './components/ApplicationForm'
@@ -14,14 +15,35 @@ function tabClass(active: boolean) {
     }`
 }
 
+const dataButtonClass =
+  'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-200/70 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
+
 export default function App() {
-  const { applications, setApplications, resetDemo, addApplication, updateApplication, deleteApplication } = useApplications()
+  const { applications, setApplications, resetDemo, addApplication, updateApplication, deleteApplication, clearAll } = useApplications()
   const { theme, toggleTheme } = useTheme()
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editing, setEditing] = useState<Application | null>(null)
   const [search, setSearch] = useState('')
   const [upcomingOnly, setUpcomingOnly] = useState(false)
   const [view, setView] = useState<'board' | 'stats'>('board')
+
+  const fileInput = useRef<HTMLInputElement>(null)
+
+  async function handleImport(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+
+    const imported = parseBackup(await file.text())
+    if (!imported) {
+      window.alert('That file is not a Job Board backup.')
+      return
+    }
+    if (window.confirm(`Replace your board with ${imported.length} applications from this file?`)) {
+      setApplications(imported)
+    }
+  }
+
 
   const query = search.trim().toLowerCase()
   const visibleApplications = applications.filter((a) => {
@@ -52,15 +74,6 @@ export default function App() {
           >
             {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
           </button>
-
-          <button
-            type="button"
-            onClick={resetDemo}
-            className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 ring-1 ring-slate-200 dark:ring-slate-800 transition hover:bg-white dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
-          >
-            <RotateCcw className="size-4" />
-            Reset demo data
-          </button>
           <button
             type="button"
             onClick={() => setIsFormOpen(true)}
@@ -72,15 +85,44 @@ export default function App() {
         </div>
       </header>
 
-      <div className="mb-6 inline-flex rounded-lg bg-slate-200/70 dark:bg-slate-800 p-1">
-        <button type="button" onClick={() => setView('board')} className={tabClass(view === 'board')}>
-          <LayoutGrid className="size-4" />
-          Board
-        </button>
-        <button type="button" onClick={() => setView('stats')} className={tabClass(view === 'stats')}>
-          <ChartColumn className="size-4" />
-          Stats
-        </button>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="inline-flex rounded-lg bg-slate-200/70 p-1 dark:bg-slate-800">
+          <button type="button" onClick={() => setView('board')} className={tabClass(view === 'board')}>
+            <LayoutGrid className="size-4" />
+            Board
+          </button>
+          <button type="button" onClick={() => setView('stats')} className={tabClass(view === 'stats')}>
+            <ChartColumn className="size-4" />
+            Stats
+          </button>
+        </div>
+
+        <div className="flex flex-wrap gap-1">
+          <button type="button" onClick={() => downloadBackup(applications)} className={dataButtonClass}>
+            <Download className="size-4" />
+            Export
+          </button>
+          <button type="button" onClick={() => fileInput.current?.click()} className={dataButtonClass}>
+            <Upload className="size-4" />
+            Import
+          </button>
+          <input ref={fileInput} type="file" accept=".json,application/json" onChange={handleImport} className="hidden" />
+
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm('Delete all applications? Export first if you want a backup.')) clearAll()
+            }}
+            className={dataButtonClass}
+          >
+            <Trash2 className="size-4" />
+            Clear all
+          </button>
+          <button type="button" onClick={resetDemo} className={dataButtonClass}>
+            <RotateCcw className="size-4" />
+            Reset demo
+          </button>
+        </div>
       </div>
 
       {view === 'board' ? (

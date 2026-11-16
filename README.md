@@ -8,7 +8,7 @@ A Kanban board for tracking job applications. Drag a card from **Applied** to **
 > I wanted to learn a new framework and, for the first time, focus only on the front end. My background is Laravel, so I rebuilt the idea of my Laravel project, [job-tracker](https://github.com/kishorekannan25/job-tracker), in React and TypeScript.
 > As I was new to React, I relied on an AI assistant ([Claude Code](https://claude.com/claude-code)) for most of the guidance and code. I typed many of the features myself, step by step, and I reviewed and tested everything before shipping. See [How it was built](#how-it-was-built) for exactly who did what.
 
-![The board in light mode](docs/screenshots/board-light.png)
+![Dragging cards between columns: the counts update as each card moves](docs/screenshots/drag-and-drop.gif)
 
 ## Features
 
@@ -23,9 +23,15 @@ A Kanban board for tracking job applications. Drag a card from **Applied** to **
 - **Helpful empty states**, for an empty board and for a search with no results, plus a welcome tip for first-time visitors that hides after their first click.
 - **Small animations**: cards lift on hover, pop-ups and menus pop in, and views fade in. They switch off for people who turn on "reduce motion".
 
-| Dark mode | Stats | Phone |
-| --- | --- | --- |
-| ![Board in dark mode](docs/screenshots/board-dark.png) | ![Stats view](docs/screenshots/stats-light.png) | ![Board on a phone](docs/screenshots/phone.png) |
+## Screenshots
+
+| Light mode | Dark mode |
+| --- | --- |
+| ![The board in light mode](docs/screenshots/board-light.png) | ![The board in dark mode](docs/screenshots/board-dark.png) |
+| **Stats** | **Editing an application** |
+| ![Stats tiles and charts](docs/screenshots/stats-light.png) | ![The edit form in a pop-up](docs/screenshots/edit-form.png) |
+| **On a phone** | |
+| ![The board on a phone](docs/screenshots/phone.png) | |
 
 ## Tech stack
 

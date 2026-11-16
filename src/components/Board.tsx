@@ -3,7 +3,8 @@ import {
   DndContext,
   DragOverlay,
   KeyboardSensor,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   closestCorners,
   useSensor,
   useSensors,
@@ -30,8 +31,10 @@ export function Board({ applications, setApplications, onCardClick }: Props) {
   const [activeId, setActiveId] = useState<string | null>(null)
 
   const sensors = useSensors(
-    // A small movement threshold, so a plain click doesn't start a drag.
-    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    // Mouse: a small movement threshold, so a plain click doesn't start a drag.
+    useSensor(MouseSensor, { activationConstraint: { distance: 6 } }),
+    // Touch: press and hold to pick a card up, so a normal swipe still scrolls the page.
+    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 8 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   )
 

@@ -15,7 +15,7 @@ export function Column({ status, applications, onCardClick }: Props) {
   const meta = STATUS_META[status]
 
   return (
-    <section className="flex w-72 shrink-0 flex-col sm:w-auto sm:flex-1">
+    <section className="flex w-72 shrink-0 flex-col lg:w-auto lg:min-w-0 lg:flex-1">
       <header className="mb-3 flex items-center gap-2 px-1">
         <span className={`size-2.5 rounded-full ${meta.dot}`} />
         <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{meta.label}</h2>

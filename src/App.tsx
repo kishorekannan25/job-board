@@ -2,14 +2,16 @@ import { CalendarClock, ChartColumn, Download, LayoutGrid, Moon, Plus, RotateCcw
 import { downloadBackup, parseBackup } from './lib/backup'
 import { useTheme } from './hooks/useTheme'
 import { Board } from './components/Board'
-import { useRef, useState, type ChangeEvent } from 'react'
+import { lazy, Suspense, useRef, useState, type ChangeEvent } from 'react'
 import { Modal } from './components/Modal'
 import { useApplications } from './hooks/useApplications'
 import { ApplicationForm } from './components/ApplicationForm'
 import type { Application } from './lib/types'
 import { isUpcoming } from './lib/dates'
-import { StatsView } from './components/StatsView'
 import { EmptyBoard } from './components/EmptyBoard'
+
+// The stats view (and the chart library it uses) is only downloaded the first time someone opens Stats.
+const StatsView = lazy(() => import('./components/StatsView').then((m) => ({ default: m.StatsView })))
 
 function tabClass(active: boolean) {
   return `inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition ${active ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
@@ -188,7 +190,9 @@ export default function App() {
 
         </>
       ) : (
-        <StatsView applications={applications} />
+        <Suspense fallback={<p className="py-16 text-center text-sm text-slate-500 dark:text-slate-400">Loading stats…</p>}>
+          <StatsView applications={applications} />
+        </Suspense>
       )}
 
       <Modal open={isFormOpen} title="Add Application" onClose={() => setIsFormOpen(false)}>

@@ -1,4 +1,4 @@
-import { CalendarClock, ChartColumn, Download, LayoutGrid, Moon, Plus, RotateCcw, Search, Sun, Trash2, Upload } from 'lucide-react'
+import { CalendarClock, ChartColumn, Download, LayoutGrid, Moon, Plus, RotateCcw, Search, Sun, Trash2, Upload, SearchX } from 'lucide-react'
 import { downloadBackup, parseBackup } from './lib/backup'
 import { useTheme } from './hooks/useTheme'
 import { Board } from './components/Board'
@@ -9,6 +9,7 @@ import { ApplicationForm } from './components/ApplicationForm'
 import type { Application } from './lib/types'
 import { isUpcoming } from './lib/dates'
 import { StatsView } from './components/StatsView'
+import { EmptyBoard } from './components/EmptyBoard'
 
 function tabClass(active: boolean) {
   return `inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition ${active ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
@@ -44,14 +45,19 @@ export default function App() {
     }
   }
 
-
   const query = search.trim().toLowerCase()
+
   const visibleApplications = applications.filter((a) => {
     const matchesSearch = a.company.toLowerCase().includes(query) || a.role.toLowerCase().includes(query)
     const matchesFilter = !upcomingOnly || isUpcoming(a.interviewAt)
     return matchesSearch && matchesFilter
   })
+
   const isFiltering = query !== '' || upcomingOnly
+  function clearFilters() {
+    setSearch('')
+    setUpcomingOnly(false)
+  }
 
   const inProgress = applications.filter((a) => a.status === 'applied' || a.status === 'interview').length
 
@@ -158,7 +164,25 @@ export default function App() {
             )}
           </div>
 
-          <Board applications={visibleApplications} setApplications={setApplications} onCardClick={setEditing} />
+          {applications.length === 0 ? (
+            <EmptyBoard onAdd={() => setIsFormOpen(true)} onReset={resetDemo} />
+          ) : visibleApplications.length === 0 ? (
+            <div className="flex flex-col items-center rounded-2xl border-2 border-dashed border-slate-200 px-6 py-16 text-center dark:border-slate-800">
+              <SearchX className="size-8 text-slate-400 dark:text-slate-500" />
+              <p className="mt-3 font-semibold text-slate-900 dark:text-slate-100">No applications match</p>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Try another search, or clear the filters.</p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="mt-4 text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+              >
+                Clear filters
+              </button>
+            </div>
+          ) : (
+            <Board applications={visibleApplications} setApplications={setApplications} onCardClick={setEditing} />
+          )}
+
         </>
       ) : (
         <StatsView applications={applications} />

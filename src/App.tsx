@@ -11,6 +11,7 @@ import { isUpcoming } from './lib/dates'
 import { EmptyBoard } from './components/EmptyBoard'
 import { DataMenu } from './components/DataMenu'
 import { Logo } from './components/Logo'
+import { DemoHint } from './components/DemoHint'
 
 const REPO_URL = 'https://github.com/kishorekannan25/job-board'
 
@@ -153,6 +154,7 @@ export default function App() {
         <div key={view} className="motion-safe:animate-fade-in">
       {view === 'board' ? (
         <>
+          {applications.length > 0 && <DemoHint />}
 
           <div className="mb-6 flex flex-wrap items-center gap-3">
             <div className="relative w-full max-w-sm">

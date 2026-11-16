@@ -29,8 +29,8 @@ export function ApplicationCard({ application, overlay = false }: Props) {
   return (
     <div
       className={`rounded-xl bg-white dark:bg-slate-900 p-4 ring-1 ring-slate-200 dark:ring-slate-800 ${
-        overlay ? 'rotate-2 cursor-grabbing shadow-xl ring-indigo-300 dark:ring-indigo-700' : 'shadow-sm hover:shadow-md hover:ring-slate-300 dark:hover:ring-slate-700'
-      } transition-shadow`}
+        overlay ? 'rotate-2 cursor-grabbing shadow-xl ring-indigo-300 dark:ring-indigo-700' : 'shadow-sm hover:-translate-y-0.5 hover:shadow-md hover:ring-slate-300 dark:hover:ring-slate-700'
+      } transition duration-200`}
     >
       <div className="flex items-start gap-3">
         <div

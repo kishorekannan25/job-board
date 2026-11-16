@@ -2,6 +2,34 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Small entrance animations, used as `motion-safe:animate-...` so they are skipped
+   for people who turn on "reduce motion" in their system settings. */
+@theme {
+  --animate-fade-in: fade-in 200ms ease-out;
+  --animate-pop-in: pop-in 160ms ease-out;
+  --animate-backdrop-in: backdrop-in 150ms ease-out;
+
+  @keyframes backdrop-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96) translateY(-4px);
+    }
+  }
+}
+
 body {
   @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
 }

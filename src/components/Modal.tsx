@@ -13,10 +13,10 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 dark:bg-black/60 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 dark:bg-black/60 p-4 backdrop-blur-sm motion-safe:animate-backdrop-in"
             onClick={onClose}
         >
-            <div className="w-full max-w-lg rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-2xl"
+            <div className="w-full max-w-lg rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-2xl motion-safe:animate-pop-in"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="mb-4 flex items-center justify-between">

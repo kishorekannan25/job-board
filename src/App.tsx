@@ -1,4 +1,4 @@
-import { CalendarClock, ChartColumn, Download, LayoutGrid, Moon, Plus, RotateCcw, Search, Sun, Trash2, Upload, SearchX } from 'lucide-react'
+import { CalendarClock, ChartColumn, Github, LayoutGrid, Moon, Plus, Search, Sun, SearchX } from 'lucide-react'
 import { downloadBackup, parseBackup } from './lib/backup'
 import { useTheme } from './hooks/useTheme'
 import { Board } from './components/Board'
@@ -9,6 +9,10 @@ import { ApplicationForm } from './components/ApplicationForm'
 import type { Application } from './lib/types'
 import { isUpcoming } from './lib/dates'
 import { EmptyBoard } from './components/EmptyBoard'
+import { DataMenu } from './components/DataMenu'
+import { Logo } from './components/Logo'
+
+const REPO_URL = 'https://github.com/kishorekannan25/job-board'
 
 // The stats view (and the chart library it uses) is only downloaded the first time someone opens Stats.
 const StatsView = lazy(() => import('./components/StatsView').then((m) => ({ default: m.StatsView })))
@@ -18,8 +22,8 @@ function tabClass(active: boolean) {
     }`
 }
 
-const dataButtonClass =
-  'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-200/70 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
+const iconButtonClass =
+  'rounded-lg p-2 text-slate-600 ring-1 ring-slate-200 transition hover:bg-white hover:text-slate-900 dark:text-slate-300 dark:ring-slate-800 dark:hover:bg-slate-800 dark:hover:text-white'
 
 export default function App() {
   const { applications, setApplications, resetDemo, addApplication, updateApplication, deleteApplication, clearAll } = useApplications()
@@ -65,77 +69,88 @@ export default function App() {
 
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <header className="mb-8 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Job Board</h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            {applications.length} applications · {inProgress} in progress
-            <span className="hidden sm:inline"> · drag a card to update its stage</span>
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="rounded-lg p-2 text-slate-600 dark:text-slate-300 ring-1 ring-slate-200 dark:ring-slate-800 transition hover:bg-white dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
-          >
-            {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
-          </button>
-          <button
-            type="button"
-            onClick={() => setIsFormOpen(true)}
-            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-500"
-          >
-            <Plus className="size-4" />
-            Add application
-          </button>
+    <div className="relative isolate flex min-h-screen flex-col">
+      {/* A soft indigo glow behind the top of the page. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(55%_60%_at_50%_0%,rgba(99,102,241,0.14),transparent)] dark:bg-[radial-gradient(55%_60%_at_50%_0%,rgba(99,102,241,0.22),transparent)]"
+      />
+
+      {/* Top bar: stays at the top while the page scrolls. */}
+      <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/70 backdrop-blur-md dark:border-slate-800/70 dark:bg-slate-950/70">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
+          <div className="flex items-center gap-2.5">
+            <Logo />
+            <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Job Board</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <a
+              href={REPO_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Source code on GitHub"
+              title="Source code on GitHub"
+              className={iconButtonClass}
+            >
+              <Github className="size-4" />
+            </a>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              className={iconButtonClass}
+            >
+              {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsFormOpen(true)}
+              aria-label="Add application"
+              className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow-sm shadow-indigo-600/30 transition hover:bg-indigo-500 active:scale-[0.98]"
+            >
+              <Plus className="size-4" />
+              <span className="hidden sm:inline">Add application</span>
+            </button>
+          </div>
         </div>
       </header>
 
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="inline-flex rounded-lg bg-slate-200/70 p-1 dark:bg-slate-800">
-          <button type="button" onClick={() => setView('board')} className={tabClass(view === 'board')}>
-            <LayoutGrid className="size-4" />
-            Board
-          </button>
-          <button type="button" onClick={() => setView('stats')} className={tabClass(view === 'stats')}>
-            <ChartColumn className="size-4" />
-            Stats
-          </button>
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">Your applications</h1>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              {applications.length} applications · {inProgress} in progress
+              <span className="hidden sm:inline"> · drag a card to update its stage</span>
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className="inline-flex rounded-lg bg-slate-200/70 p-1 dark:bg-slate-800">
+              <button type="button" onClick={() => setView('board')} className={tabClass(view === 'board')}>
+                <LayoutGrid className="size-4" />
+                Board
+              </button>
+              <button type="button" onClick={() => setView('stats')} className={tabClass(view === 'stats')}>
+                <ChartColumn className="size-4" />
+                Stats
+              </button>
+            </div>
+            <DataMenu
+              onExport={() => downloadBackup(applications)}
+              onImport={() => fileInput.current?.click()}
+              onReset={resetDemo}
+              onClear={() => {
+                if (window.confirm('Delete all applications? Export first if you want a backup.')) clearAll()
+              }}
+            />
+            <input ref={fileInput} type="file" accept=".json,application/json" onChange={handleImport} className="hidden" />
+          </div>
         </div>
 
-        <div className="flex flex-wrap gap-1">
-          <button type="button" onClick={() => downloadBackup(applications)} className={dataButtonClass} title="Export a backup file" aria-label="Export">
-            <Download className="size-4" />
-            <span className="hidden sm:inline">Export</span>
-          </button>
-          <button type="button" onClick={() => fileInput.current?.click()} className={dataButtonClass} title="Import a backup file" aria-label="Import">
-            <Upload className="size-4" />
-            <span className="hidden sm:inline">Import</span>
-          </button>
-          <input ref={fileInput} type="file" accept=".json,application/json" onChange={handleImport} className="hidden" />
-
-          <button
-            type="button"
-            onClick={() => {
-              if (window.confirm('Delete all applications? Export first if you want a backup.')) clearAll()
-            }}
-            className={dataButtonClass}
-            title="Delete all applications"
-            aria-label="Clear all"
-          >
-            <Trash2 className="size-4" />
-            <span className="hidden sm:inline">Clear all</span>
-          </button>
-          <button type="button" onClick={resetDemo} className={dataButtonClass} title="Reset demo data" aria-label="Reset demo">
-            <RotateCcw className="size-4" />
-            <span className="hidden sm:inline">Reset demo</span>
-          </button>
-        </div>
-      </div>
-
+        {/* key={view} makes the content fade in again each time you switch between Board and Stats. */}
+        <div key={view} className="motion-safe:animate-fade-in">
       {view === 'board' ? (
         <>
 
@@ -194,6 +209,14 @@ export default function App() {
           <StatsView applications={applications} />
         </Suspense>
       )}
+        </div>
+      </main>
+
+      <footer className="border-t border-slate-200/70 dark:border-slate-800/70">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 dark:text-slate-400">
+          <p>Built by Kishore with React, TypeScript and Tailwind CSS. Your data stays in your browser.</p>
+        </div>
+      </footer>
 
       <Modal open={isFormOpen} title="Add Application" onClose={() => setIsFormOpen(false)}>
         <ApplicationForm

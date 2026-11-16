@@ -68,7 +68,8 @@ export default function App() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Job Board</h1>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            {applications.length} applications · {inProgress} in progress · drag a card to update its stage
+            {applications.length} applications · {inProgress} in progress
+            <span className="hidden sm:inline"> · drag a card to update its stage</span>
           </p>
         </div>
         <div className="flex gap-2">
@@ -104,13 +105,13 @@ export default function App() {
         </div>
 
         <div className="flex flex-wrap gap-1">
-          <button type="button" onClick={() => downloadBackup(applications)} className={dataButtonClass}>
+          <button type="button" onClick={() => downloadBackup(applications)} className={dataButtonClass} title="Export a backup file" aria-label="Export">
             <Download className="size-4" />
-            Export
+            <span className="hidden sm:inline">Export</span>
           </button>
-          <button type="button" onClick={() => fileInput.current?.click()} className={dataButtonClass}>
+          <button type="button" onClick={() => fileInput.current?.click()} className={dataButtonClass} title="Import a backup file" aria-label="Import">
             <Upload className="size-4" />
-            Import
+            <span className="hidden sm:inline">Import</span>
           </button>
           <input ref={fileInput} type="file" accept=".json,application/json" onChange={handleImport} className="hidden" />
 
@@ -120,13 +121,15 @@ export default function App() {
               if (window.confirm('Delete all applications? Export first if you want a backup.')) clearAll()
             }}
             className={dataButtonClass}
+            title="Delete all applications"
+            aria-label="Clear all"
           >
             <Trash2 className="size-4" />
-            Clear all
+            <span className="hidden sm:inline">Clear all</span>
           </button>
-          <button type="button" onClick={resetDemo} className={dataButtonClass}>
+          <button type="button" onClick={resetDemo} className={dataButtonClass} title="Reset demo data" aria-label="Reset demo">
             <RotateCcw className="size-4" />
-            Reset demo
+            <span className="hidden sm:inline">Reset demo</span>
           </button>
         </div>
       </div>

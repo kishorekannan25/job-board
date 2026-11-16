@@ -13,7 +13,7 @@ export function SortableCard({ application, onClick }: { application: Applicatio
     <div
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={`cursor-grab touch-manipulation select-none${isDragging ? 'opacity-40' : ''}`}
+      className={`cursor-grab touch-manipulation select-none ${isDragging ? 'opacity-40' : ''}`}
       onClick={onClick}
       {...attributes}
       {...listeners}

@@ -2,7 +2,7 @@
 
 A Kanban board for tracking job applications. Drag a card from **Applied** to **Interview**, **Offer** or **Rejected**, search and filter as you type, and see how your job hunt is going on a stats page.
 
-**Live demo:** _coming soon_ (opens with sample data, no sign-up needed)
+**Live demo: [job-board-five-navy.vercel.app](https://job-board-five-navy.vercel.app)** (opens with sample data, no sign-up needed)
 
 > **A learning project: my first React app, built with AI assistance.**
 > I wanted to learn a new framework and, for the first time, focus only on the front end. My background is Laravel, so I rebuilt the idea of my Laravel project, [job-tracker](https://github.com/kishorekannan25/job-tracker), in React and TypeScript.

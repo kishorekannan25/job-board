@@ -12,11 +12,13 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
     if (!open) return null
 
     return (
+        // The dark layer can scroll, so a form taller than the screen (a phone in portrait) can still be reached.
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 dark:bg-black/60 p-4 backdrop-blur-sm motion-safe:animate-backdrop-in"
+            className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm motion-safe:animate-backdrop-in"
             onClick={onClose}
         >
-            <div className="w-full max-w-lg rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-2xl motion-safe:animate-pop-in"
+            <div className="flex min-h-full items-center justify-center p-4">
+            <div className="w-full max-w-lg rounded-2xl bg-white dark:bg-slate-900 p-5 sm:p-6 shadow-2xl motion-safe:animate-pop-in"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="mb-4 flex items-center justify-between">
@@ -32,6 +34,7 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
                 </div>
 
                 {children}
+            </div>
             </div>
         </div>
     )

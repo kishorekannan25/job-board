@@ -130,7 +130,8 @@ export function ApplicationForm({ initial, onSubmit, onCancel, onDelete }: Appli
         </label>
       </div>
 
-      <div className="flex items-center gap-2 pt-2">
+      {/* Sticks to the bottom of the screen while the form scrolls, so Save is always in reach on a phone. */}
+      <div className="sticky bottom-0 -mx-5 -mb-5 flex items-center gap-2 rounded-b-2xl border-t border-slate-100 bg-white px-5 py-4 sm:-mx-6 sm:-mb-6 sm:px-6 dark:border-slate-800 dark:bg-slate-900">
         {onDelete && (
           <button
             type="button"
